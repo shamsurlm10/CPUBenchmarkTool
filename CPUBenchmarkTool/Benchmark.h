@@ -14,7 +14,7 @@ public:
 	Benchmark(DWORD total_cores);
 	int get_total_cpu();
 	void single_thread_benchmark_run();
-	double multi_thread_benchmark_run(int cores);
+	void multi_thread_benchmark_run(int cores);
 	void PrintSingleCorePerformance();
 	void PrintMultiCorePerformance();
 };

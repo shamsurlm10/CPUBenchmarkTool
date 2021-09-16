@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <pthread.h>
+#include <vector>
 
 // PThread Problem solution
 // https://stackoverflow.com/questions/28975700/how-to-add-pthread-library-to-c-project-in-visual-studio-community-edition/33557386

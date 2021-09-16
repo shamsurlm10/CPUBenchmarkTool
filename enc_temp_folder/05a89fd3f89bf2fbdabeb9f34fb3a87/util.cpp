@@ -40,7 +40,7 @@ void menu(Benchmark benchmark) {
 			break;
 		}
 		case 2: {
-			int cores = get_choice(2, benchmark.get_total_cpu()+1, "How many cores do you want to benchmark?");
+			int cores = get_choice(2, benchmark.get_total_cpu()+1, "How many threads benchmark you want?");
 			if (cores == -1)
 				std::cout << "\t\t\t\t\tSorry! Invalid input. Try again." << std::endl;
 			else

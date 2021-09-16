@@ -49,17 +49,58 @@ void Benchmark::single_thread_benchmark_run() {
 	// std::cout << "\t\t\t\t\tFloating Point Operations Executed Time: " << float_benchmark_time << " s" << std::endl;
 	// std::cout << "\t\t\t\t\tPrime Number Operation Executed Time: " << prime_number_benchmark_time << " s" << std::endl;
 
-	this->single_integer_score = 1 / int_benchmark_time;
-	this->single_floating_point_score = 1 / float_benchmark_time;
-	this->single_prime_number_score = 1 / prime_number_benchmark_time;
+	this->single_integer_score = (1 / int_benchmark_time) * 100;
+	this->single_floating_point_score = (1 / float_benchmark_time) * 100;
+	this->single_prime_number_score = (1 / prime_number_benchmark_time) * 100;
 
 	this->PrintSingleCorePerformance();
 	double average_score = (this->single_integer_score + this->single_floating_point_score + this->single_prime_number_score) / 3;
 	std::cout << "\t\t\t\t\tTotal Score: " << average_score << std::endl;
 }
 
-double Benchmark::multi_thread_benchmark_run(int cores) {
-	return 0.1;
+void Benchmark::multi_thread_benchmark_run(int cores) {
+	std::vector<pthread_t> threads(cores);
+	std::chrono::steady_clock::time_point start, end;
+	std::chrono::duration<double> passed;
+	uint32_t i;
+
+	std::cout << "\t\t\t\t\tRunning Integer Operations Benchmark..." << std::endl;
+	start = std::chrono::steady_clock::now();
+	for (i = 0; i < cores; i++)
+		pthread_create(&threads[i], NULL, benchmarkInteger, NULL);
+	for (i = 0; i < cores; i++)
+		pthread_join(threads[i], NULL);
+	end = std::chrono::steady_clock::now();
+	passed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+	double int_benchmark_time = passed.count();
+
+	std::cout << "\t\t\t\t\tRunning Floating Point Operations Benchmark..." << std::endl;
+	start = std::chrono::steady_clock::now();
+	for (i = 0; i < cores; i++)
+		pthread_create(&threads[i], NULL, benchmarkFloat, NULL);
+	for (i = 0; i < cores; i++)
+		pthread_join(threads[i], NULL);
+	end = std::chrono::steady_clock::now();
+	passed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+	double float_benchmark_time = passed.count();
+
+	std::cout << "\t\t\t\t\tRunning Prime Number Benchmark..." << std::endl;
+	start = std::chrono::steady_clock::now();
+	for (i = 0; i < cores; i++)
+		pthread_create(&threads[i], NULL, benchmarkPrimeNumber, NULL);
+	for (i = 0; i < cores; i++)
+		pthread_join(threads[i], NULL);
+	end = std::chrono::steady_clock::now();
+	passed = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
+	double prime_number_benchmark_time = passed.count();
+
+	this->multi_integer_score = (1 / int_benchmark_time) * 100;
+	this->multi_floating_point_score = (1 / float_benchmark_time) * 100;
+	this->multi_prime_number_score = (1 / prime_number_benchmark_time) * 100;
+
+	this->PrintMultiCorePerformance();
+	double average_score = (this->multi_integer_score + this->multi_floating_point_score + this->multi_prime_number_score) / 3;
+	std::cout << "\t\t\t\t\tTotal Score: " << average_score << std::endl;
 }
 
 void Benchmark::PrintSingleCorePerformance() {
@@ -68,7 +109,7 @@ void Benchmark::PrintSingleCorePerformance() {
 	std::cout << "\t\t\t\t\tPrime Number Operation Score: " << this->single_prime_number_score << std::endl;
 }
 void Benchmark::PrintMultiCorePerformance() {
-	// std::cout << "\t\t\t\t\tInteger Operations Executed Time: " << int_benchmark_time << " s" << std::endl;
-	// std::cout << "\t\t\t\t\tFloating Point Operations Executed Time: " << float_benchmark_time << " s" << std::endl;
-	// std::cout << "\t\t\t\t\tPrime Number Operation Executed Time: " << prime_number_benchmark_time << " s" << std::endl;
+	std::cout << "\t\t\t\t\tInteger Operations Score: " << this->multi_integer_score << std::endl;
+	std::cout << "\t\t\t\t\tFloating Point Operations Score: " << this->multi_floating_point_score << std::endl;
+	std::cout << "\t\t\t\t\tPrime Number Operation Score: " << this->multi_prime_number_score << std::endl;
 }

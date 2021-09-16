@@ -7,7 +7,7 @@ void* benchmarkInteger(void* args) {
 
     uint64_t i;
     for (i = 0; i < 1e10; i++) {
-        auto result = 560 % 88 * (i - 8888);
+        auto result = 560 % 88 * (i - 88 + 88);
     }
     return NULL;
 }
@@ -18,7 +18,7 @@ void* benchmarkFloat(void* args) {
 
     double i;
     for (i = 0.5; i < 1e10; i++) {
-        auto result = 560 / 88.893642 * (i - 820);
+        auto result = (4 + 560) / 88.893642 * (i - 820);
     }
     return NULL;
 }
